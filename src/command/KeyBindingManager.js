@@ -2163,7 +2163,7 @@ define(function (require, exports, module) {
     }
 
     /**
-     * Returns true the given command id can be overriden by user.
+     * Returns true the given command id can be overridden by user.
      *
      * @param commandId
      * @return {boolean}
