@@ -186,6 +186,6 @@ is called or document changes.
 <a name="module_features/QuickViewManager..unlockQuickView"></a>
 
 ### features/QuickViewManager.unlockQuickView() : <code>function</code>
-unlocks the current QuickView locked by `lockQuickView` fucntion.
+unlocks the current QuickView locked by `lockQuickView` function.
 
 **Kind**: inner method of [<code>features/QuickViewManager</code>](#module_features/QuickViewManager)  

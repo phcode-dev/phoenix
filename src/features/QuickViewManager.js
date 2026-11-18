@@ -794,7 +794,7 @@ define(function (require, exports, module) {
     }
 
     /**
-     * unlocks the current QuickView locked by `lockQuickView` fucntion.
+     * unlocks the current QuickView locked by `lockQuickView` function.
      *
      * @type {function}
      */

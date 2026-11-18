@@ -226,7 +226,7 @@ define(function (require, exports, module) {
      *
      * This function is used internally to set the current language of the document.
      * Both at the moment of opening the file and when the language is manually
-     * overriden.
+     * overridden.
      *
      * @param {string} newLanguageId The id of the language of the current editor.
      */
